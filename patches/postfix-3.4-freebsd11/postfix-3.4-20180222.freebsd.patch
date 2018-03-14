@@ -1,0 +1,30 @@
+diff -Naur a/postfix-3.4-20180222/makedefs b/postfix-3.4-20180222/makedefs
+--- a/postfix-3.4-20180222/makedefs	2017-07-27 15:42:47.000000000 +0000
++++ b/postfix-3.4-20180222/makedefs	2018-03-14 21:29:39.738573000 +0000
+@@ -287,6 +287,15 @@
+ 		: ${SHLIB_ENV="LD_LIBRARY_PATH=`pwd`/lib"}
+ 		: ${PLUGIN_LD="${CC} -shared"}
+ 		;;
++  FreeBSD.11*)	SYSTYPE=FREEBSD11
++		: ${CC=cc}
++		: ${SHLIB_SUFFIX=.so}
++		: ${SHLIB_CFLAGS=-fPIC}
++		: ${SHLIB_LD="${CC} -shared"' -Wl,-soname,${LIB}'}
++		: ${SHLIB_RPATH='-Wl,-rpath,${SHLIB_DIR}'}
++		: ${SHLIB_ENV="LD_LIBRARY_PATH=`pwd`/lib"}
++		: ${PLUGIN_LD="${CC} -shared"}
++		;;
+  DragonFly.*)	SYSTYPE=DRAGONFLY
+ 		;;
+   OpenBSD.2*)	SYSTYPE=OPENBSD2
+diff -Naur a/postfix-3.4-20180222/src/util/sys_defs.h b/postfix-3.4-20180222/src/util/sys_defs.h
+--- a/postfix-3.4-20180222/src/util/sys_defs.h	2017-06-18 19:30:20.000000000 +0000
++++ b/postfix-3.4-20180222/src/util/sys_defs.h	2018-03-14 21:30:04.781630000 +0000
+@@ -30,6 +30,7 @@
+ #if defined(FREEBSD2) || defined(FREEBSD3) || defined(FREEBSD4) \
+     || defined(FREEBSD5) || defined(FREEBSD6) || defined(FREEBSD7) \
+     || defined(FREEBSD8) || defined(FREEBSD9) || defined(FREEBSD10) \
++	|| defined(FREEBSD11) \
+     || defined(BSDI2) || defined(BSDI3) || defined(BSDI4) \
+     || defined(OPENBSD2) || defined(OPENBSD3) || defined(OPENBSD4) \
+     || defined(OPENBSD5) || defined(OPENBSD6) \
